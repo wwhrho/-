@@ -33,8 +33,8 @@ async def on_message(message):
     if message.channel.category_id != AUTH_CHANNEL_CATEGORY_ID:
         return
 
-    name_match = re.search(r"^이름\s*[:：]\s*(.+)$", message.content, re.MULTILINE)
-    family_match = re.search(r"^가문\s*[:：]\s*(.+)$", message.content, re.MULTILINE)
+    name_match = re.search(r"이름\s*[:：]\s*(.+)", message.content)
+    family_match = re.search(r"가문\s*[:：]\s*(.+)", message.content)
 
     if name_match and family_match:
         name = name_match.group(1).strip()
