@@ -15,7 +15,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 GUILD_ID = 1278677581209796618
 AUTH_CHANNEL_ID = 1358474101672382696
 ROLE_NAME = "자유시민"
-UNVERIFIED_ROLE_NAME = "Undocumented"
+PREVIOUS_ROLE_NAME = "Undocumented"
 
 @bot.event
 async def on_ready():
@@ -24,7 +24,7 @@ async def on_ready():
 @bot.event
 async def on_member_join(member):
     guild = bot.get_guild(GUILD_ID)
-    role = discord.utils.get(guild.roles, name=UNVERIFIED_ROLE_NAME)
+    role = discord.utils.get(guild.roles, name=PREVIOUS_ROLE_NAME)
     if role:
         await member.add_roles(role)
 
@@ -44,14 +44,14 @@ async def on_message(message):
         guild = bot.get_guild(GUILD_ID)
         member = guild.get_member(message.author.id)
         role = discord.utils.get(guild.roles, name=ROLE_NAME)
+        prev_role = discord.utils.get(guild.roles, name=PREVIOUS_ROLE_NAME)
 
-        if role and member:
+        if role:
             await member.add_roles(role)
-            undocumented_role = discord.utils.get(guild.roles, name=UNVERIFIED_ROLE_NAME)
-            if undocumented_role in member.roles:
-                await member.remove_roles(undocumented_role)
-            await member.edit(nick=nickname)
+        if prev_role:
+            await member.remove_roles(prev_role)
 
+        await member.edit(nick=nickname)
         await message.delete()
 
     await bot.process_commands(message)
