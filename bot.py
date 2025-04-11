@@ -13,7 +13,7 @@ intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 GUILD_ID = 1278677581209796618
-AUTH_CHANNEL_PREFIX = "ticket-0037"
+AUTH_CHANNEL_PREFIX = "ticket-"
 ROLE_NAME = "UNION CITIZEN"
 REMOVE_ROLE_NAME = "Undocumented"
 
