@@ -14,7 +14,6 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 GUILD_ID = 1278677581209796618
 TICKET_CHANNEL_PREFIX = "ticket-"
-AUTH_CHANNEL_CATEGORY_ID = 1287381448810037258
 ROLE_NAME = "UNION CITIZEN"
 REMOVE_ROLE_NAME = "Undocumented"
 
@@ -28,9 +27,6 @@ async def on_message(message):
         return
 
     if not message.channel.name.startswith(TICKET_CHANNEL_PREFIX):
-        return
-
-    if message.channel.category_id != AUTH_CHANNEL_CATEGORY_ID:
         return
 
     name_match = re.search(r"^이름\s*[:：]\s*(.+)$", message.content, re.MULTILINE)
@@ -58,3 +54,4 @@ async def on_message(message):
     await bot.process_commands(message)
 
 bot.run(os.getenv("DISCORD_TOKEN"))
+
