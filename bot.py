@@ -13,7 +13,7 @@ intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 GUILD_ID = 1278677581209796618
-AUTH_CHANNEL_ID = 1353017332842237992
+AUTH_CHANNEL_PREFIX = "ticket-0037"
 ROLE_NAME = "UNION CITIZEN"
 REMOVE_ROLE_NAME = "Undocumented"
 
@@ -23,29 +23,30 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message.author.bot or message.channel.id != AUTH_CHANNEL_ID:
+    if message.author.bot or not message.channel.name.startswith(AUTH_CHANNEL_PREFIX):
         return
 
-    name_match = re.search(r"이름\s*[:：]\s*(.+)", message.content)
-    family_match = re.search(r"가문\s*[:：]\s*(.+)", message.content)
+    name_match = re.search(r"이름\s*[:：]?\s*(\S+)", message.content)
+    family_match = re.search(r"가문\s*[:：]?\s*(\S+)", message.content)
 
     if name_match and family_match:
-        name = name_match.group(1).strip()
-        family = family_match.group(1).strip()
+        name = name_match.group(1)
+        family = family_match.group(1)
         nickname = f"자유시민 {name} {family}"
 
         guild = bot.get_guild(GUILD_ID)
         member = guild.get_member(message.author.id)
+
         add_role = discord.utils.get(guild.roles, name=ROLE_NAME)
         remove_role = discord.utils.get(guild.roles, name=REMOVE_ROLE_NAME)
 
         if add_role:
             await member.add_roles(add_role)
-        if remove_role and remove_role in member.roles:
+        if remove_role:
             await member.remove_roles(remove_role)
 
         await member.edit(nick=nickname)
-        await message.delete()
+        await message.channel.delete()
 
     await bot.process_commands(message)
 
