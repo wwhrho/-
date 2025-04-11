@@ -33,12 +33,12 @@ async def on_message(message):
     if message.channel.category_id != AUTH_CHANNEL_CATEGORY_ID:
         return
 
-    name_match = re.search(r"이름\s*[:：]\s*(\S+)", message.content)
-    family_match = re.search(r"가문\s*[:：]\s*(\S+)", message.content)
+    name_match = re.search(r"이름\s*[:：]\s*(.+)", message.content, re.MULTILINE)
+    family_match = re.search(r"가문\s*[:：]\s*(.+)", message.content, re.MULTILINE)
 
     if name_match and family_match:
-        name = name_match.group(1)
-        family = family_match.group(1)
+        name = name_match.group(1).strip()
+        family = family_match.group(1).strip()
         nickname = f"자유시민 {name} {family}"
 
         guild = bot.get_guild(GUILD_ID)
