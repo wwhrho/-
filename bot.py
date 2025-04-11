@@ -12,8 +12,8 @@ intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-GUILD_ID = 1342090602782789732
-AUTH_CHANNEL_ID = 1342090602782789735
+GUILD_ID = 1278677581209796618
+AUTH_CHANNEL_ID = 1358474101672382696
 ROLE_NAME = "자유시민"
 
 @bot.event
