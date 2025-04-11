@@ -13,7 +13,8 @@ intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 GUILD_ID = 1278677581209796618
-AUTH_CHANNEL_PREFIX = "ticket-"
+TICKET_CHANNEL_PREFIX = "ticket-"
+AUTH_CHANNEL_CATEGORY_ID = 1287381448810037258
 ROLE_NAME = "UNION CITIZEN"
 REMOVE_ROLE_NAME = "Undocumented"
 
@@ -23,11 +24,17 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message.author.bot or not message.channel.name.startswith(AUTH_CHANNEL_PREFIX):
+    if message.author.bot:
         return
 
-    name_match = re.search(r"이름\s*[:：]?\s*(\S+)", message.content)
-    family_match = re.search(r"가문\s*[:：]?\s*(\S+)", message.content)
+    if not message.channel.name.startswith(TICKET_CHANNEL_PREFIX):
+        return
+
+    if message.channel.category_id != AUTH_CHANNEL_CATEGORY_ID:
+        return
+
+    name_match = re.search(r"이름\s*[:：]\s*(\S+)", message.content)
+    family_match = re.search(r"가문\s*[:：]\s*(\S+)", message.content)
 
     if name_match and family_match:
         name = name_match.group(1)
